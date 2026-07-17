@@ -1,0 +1,18 @@
+---
+import { withBase } from '../lib/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div>
+      <a class="wordmark" href={withBase('/')}>AH<span>.</span></a>
+      <p>Built with Astro. Designed and developed as an evolving engineering portfolio.</p>
+    </div>
+    <div class="footer-links" aria-label="Social links">
+      <a href="https://github.com/ArtinHeidari" rel="me noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer">LinkedIn</a>
+    </div>
+    <p class="copyright">© {year} Artin Heidari</p>
+  </div>
+</footer>

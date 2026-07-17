@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+const projects = (await getCollection('projects')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="Projects — Artin Heidari" description="Engineering and software projects by Artin Heidari.">
+  <section class="page-hero shell">
+    <p class="section-number">PROJECT ARCHIVE</p>
+    <h1>Work, experiments,<br />and lessons learned.</h1>
+    <p>Case studies will document the goal, implementation, testing, and reflection behind every finished build.</p>
+  </section>
+  <section class="section shell">
+    <div class="project-list">{projects.map((project, index) => <ProjectCard project={project} index={index + 1} />)}</div>
+  </section>
+</BaseLayout>

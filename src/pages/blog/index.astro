@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="Writing — Artin Heidari" description="Project notes and engineering build logs by Artin Heidari.">
+  <section class="page-hero shell">
+    <p class="section-number">BUILD LOG</p>
+    <h1>Decisions, problems,<br />and progress.</h1>
+    <p>Short technical notes will explain what happened between the idea and the finished result.</p>
+  </section>
+  <section class="section shell"><div class="blog-grid">{posts.map((post) => <BlogCard post={post} />)}</div></section>
+</BaseLayout>
