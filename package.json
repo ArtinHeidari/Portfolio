@@ -1,0 +1,27 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "My personal engineering and software development portfolio",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArtinHeidari/Portfolio.git"
+  },
+  "keywords": [],
+  "author": "Artin Heidari",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ArtinHeidari/Portfolio/issues"
+  },
+  "homepage": "https://github.com/ArtinHeidari/Portfolio#readme",
+  "dependencies": {
+    "astro": "^7.1.0"
+  }
+}
