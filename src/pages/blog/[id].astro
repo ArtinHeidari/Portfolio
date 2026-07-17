@@ -1,0 +1,25 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/site';
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+interface Props { post: CollectionEntry<'blog'> }
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<BaseLayout title={`${post.data.title} — Artin Heidari`} description={post.data.description}>
+  <article class="case-study shell">
+    <a class="back-link" href={withBase('/blog/')}>← All writing</a>
+    <header class="case-header">
+      <div class="eyebrow-row"><time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' })}</time>{post.data.demo && <span class="demo-label">Demo content</span>}</div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <ul class="tag-list">{post.data.tags.map((tag) => <li>{tag}</li>)}</ul>
+    </header>
+    {post.data.demo && <div class="demo-banner"><strong>Sample only.</strong> This entry previews the blog format and is not a real project log.</div>}
+    <div class="article-body"><Content /></div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,26 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+interface Props { project: CollectionEntry<'projects'> }
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+<BaseLayout title={`${project.data.title} — Artin Heidari`} description={project.data.summary}>
+  <article class="case-study shell">
+    <a class="back-link" href={withBase('/projects/')}>← All projects</a>
+    <header class="case-header">
+      <div class="eyebrow-row"><span>{project.data.date.getFullYear()}</span>{project.data.demo && <span class="demo-label">Demo content</span>}</div>
+      <h1>{project.data.title}</h1>
+      <p>{project.data.summary}</p>
+      <ul class="tag-list">{project.data.technologies.map((technology) => <li>{technology}</li>)}</ul>
+    </header>
+    {project.data.demo && <div class="demo-banner"><strong>Sample only.</strong> This page demonstrates the future project format and does not claim a completed project.</div>}
+    <div class="article-body"><Content /></div>
+  </article>
+</BaseLayout>

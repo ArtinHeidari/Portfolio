@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/ArtinHeidari/Portfolio/issues"
   },
-  "homepage": "https://github.com/ArtinHeidari/Portfolio#readme",
+  "homepage": "https://artinheidari.github.io/Portfolio/",
   "dependencies": {
     "astro": "^7.1.0"
   }

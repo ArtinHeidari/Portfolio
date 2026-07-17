@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../lib/site';
+interface Props { post: CollectionEntry<'blog'> }
+const { post } = Astro.props;
+---
+
+<article class="blog-card">
+  <a href={withBase(`/blog/${post.id}/`)}>
+    <div class="eyebrow-row">
+      <time datetime={post.data.date.toISOString()}>{post.data.date.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' })}</time>
+      {post.data.demo && <span class="demo-label">Demo content</span>}
+    </div>
+    <h3>{post.data.title}</h3>
+    <p>{post.data.description}</p>
+    <span class="text-link">Read entry <span aria-hidden="true">→</span></span>
+  </a>
+</article>
