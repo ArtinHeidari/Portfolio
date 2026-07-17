@@ -11,18 +11,31 @@ const { project, index = 1 } = Astro.props;
 
 <article class="project-card">
   <a class="project-link" href={withBase(`/projects/${project.id}/`)}>
-    <div class="project-number">{String(index).padStart(2, '0')}</div>
+    <div class="project-visual" aria-hidden="true">
+      <div class="visual-toolbar"><i></i><i></i><i></i><span>SENSOR / 01</span></div>
+      <div class="visual-grid">
+        <div class="signal-chart"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="signal-reading"><small>LIVE INPUT</small><strong>24.8</strong><em>°C</em></div>
+        <div class="signal-status"><i></i><span>SYSTEM NOMINAL</span></div>
+        <div class="signal-code">0101<br />1100<br />0010</div>
+      </div>
+    </div>
+
     <div class="project-copy">
       <div class="eyebrow-row">
+        <span>{String(index).padStart(2, '0')}</span>
         <span>{project.data.date.getFullYear()}</span>
-        {project.data.demo && <span class="demo-label">Demo content</span>}
+        {project.data.demo && <span class="demo-label">Layout preview</span>}
       </div>
       <h3>{project.data.title}</h3>
       <p>{project.data.summary}</p>
-      <ul class="tag-list" aria-label="Technologies">
-        {project.data.technologies.map((technology) => <li>{technology}</li>)}
-      </ul>
+
+      <dl class="project-facts">
+        <div><dt>Status</dt><dd>{project.data.demo ? 'Demo only' : 'Documented build'}</dd></div>
+        <div><dt>Focus</dt><dd>{project.data.technologies.slice(0, 3).join(' · ')}</dd></div>
+      </dl>
+
+      <span class="project-cta">View case-study format <b aria-hidden="true">↗</b></span>
     </div>
-    <span class="arrow" aria-hidden="true">↗</span>
   </a>
 </article>
