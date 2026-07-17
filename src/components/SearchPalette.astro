@@ -1,0 +1,41 @@
+---
+import { withBase } from '../lib/site';
+
+const commands = [
+  { label: 'View selected work', detail: 'Browse featured engineering projects', href: withBase('/#work'), icon: '▦' },
+  { label: 'About Artin', detail: 'Education, interests, and background', href: withBase('/#about'), icon: '◎' },
+  { label: 'Contact', detail: 'Availability and professional links', href: withBase('/#contact'), icon: '↗' },
+  { label: 'GitHub', detail: 'View code and repositories', href: 'https://github.com/ArtinHeidari', icon: '</>' },
+  { label: 'LinkedIn', detail: 'Open professional profile', href: 'https://www.linkedin.com/in/artinheidari/', icon: 'in' },
+];
+---
+
+<div class="command-backdrop" data-command-backdrop hidden>
+  <section class="command-palette" role="dialog" aria-modal="true" aria-labelledby="command-title">
+    <h2 id="command-title" class="sr-only">Navigate Artin’s portfolio</h2>
+    <div class="command-search">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+      <input data-command-input type="search" autocomplete="off" placeholder="Search pages or actions…" aria-label="Search pages or actions" />
+      <kbd>ESC</kbd>
+    </div>
+    <div class="command-body">
+      <p class="command-group-label">Navigate</p>
+      <div class="command-list" data-command-list>
+        {commands.map((command, index) => (
+          <a class="command-item" data-command-item data-index={index} href={command.href} rel={command.href.startsWith('http') ? 'me noreferrer' : undefined}>
+            <span class="command-icon" aria-hidden="true">{command.icon}</span>
+            <span><strong>{command.label}</strong><small>{command.detail}</small></span>
+            <kbd>↵</kbd>
+          </a>
+        ))}
+        <button class="command-item" type="button" data-command-item data-command-theme data-index={commands.length}>
+          <span class="command-icon" aria-hidden="true">◐</span>
+          <span><strong>Toggle colour mode</strong><small>Switch between dark and light themes</small></span>
+          <kbd>↵</kbd>
+        </button>
+      </div>
+      <p class="command-empty" data-command-empty hidden>No matching actions.</p>
+    </div>
+    <footer class="command-footer"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> select</span></footer>
+  </section>
+</div>
