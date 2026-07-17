@@ -28,11 +28,8 @@ const projects = (await getCollection('projects'))
         <span class="mark-label mark-label-a">INPUT</span>
         <span class="mark-label mark-label-b">BUILD</span>
         <span class="mark-label mark-label-c">TEST</span>
-        <span class="mark-node node-a"></span>
-        <span class="mark-node node-b"></span>
-        <span class="mark-node node-c"></span>
-        <span class="mark-line line-a"></span>
-        <span class="mark-line line-b"></span>
+        <span class="mark-node node-a"></span><span class="mark-node node-b"></span><span class="mark-node node-c"></span>
+        <span class="mark-line line-a"></span><span class="mark-line line-b"></span>
         <strong>AH<span>/26</span></strong>
         <p>ENGINEERING<br />SOFTWARE<br />SYSTEMS</p>
       </div>
@@ -46,35 +43,29 @@ const projects = (await getCollection('projects'))
   </section>
 
   <section class="section shell work-section" id="work" aria-labelledby="work-heading">
-    <div class="section-heading compact-heading">
-      <div>
-        <p class="section-number">01 / SELECTED WORK</p>
-        <h2 id="work-heading">Projects, with the thinking included.</h2>
-      </div>
-      <p class="section-note">Problem → decisions → implementation → result</p>
-    </div>
+    <header class="section-title-row">
+      <div><p class="section-number">01 / WORK</p><h2 id="work-heading">Selected work</h2></div>
+      <a class="text-link" href={withBase('/projects/')}>Project archive <span aria-hidden="true">→</span></a>
+    </header>
 
-    <div class="project-list">
+    <div class="project-list project-grid">
       {projects.map((project, index) => <ProjectCard project={project} index={index + 1} />)}
     </div>
 
-    <div class="work-footer">
-      <p><strong>Honest by default.</strong> The current entry is a clearly marked layout preview, not a claimed project.</p>
-      <a class="text-link" href={withBase('/projects/')}>View project archive <span aria-hidden="true">→</span></a>
-    </div>
+    <p class="work-disclaimer"><strong>Current preview:</strong> sample entries remain clearly labelled until real projects are documented.</p>
   </section>
 
-  <section class="section shell about-section" id="about" aria-labelledby="about-heading">
-    <div class="section-intro">
-      <p class="section-number">02 / ABOUT</p>
-      <h2 id="about-heading">Curious across the whole system.</h2>
-    </div>
+  <section class="section shell compact-section" id="about" aria-labelledby="about-heading">
+    <header class="section-title-row">
+      <div><p class="section-number">02 / PROFILE</p><h2 id="about-heading">About</h2></div>
+    </header>
 
-    <div class="about-copy">
-      <p class="lead">I’m interested in the point where code meets electronics and physical systems—where an idea has to work outside a demo.</p>
-      <p>I’ll begin Queen’s Engineering in Fall 2026 with interests in computer and electrical engineering, robotics, embedded development, AI, and computer vision.</p>
-      <p>Mathematics, skating, tutoring, piano, chess, and robotics have shaped how I approach difficult work: stay disciplined, communicate clearly, and keep iterating.</p>
-
+    <div class="about-compact">
+      <div class="about-copy">
+        <p class="lead">I’m interested in the point where code meets electronics and physical systems—where an idea has to work outside a demo.</p>
+        <p>I’ll begin Queen’s Engineering in Fall 2026 with interests in computer and electrical engineering, robotics, embedded development, AI, and computer vision.</p>
+        <p>Mathematics, skating, tutoring, piano, chess, and robotics have shaped how I approach difficult work: stay disciplined, communicate clearly, and keep iterating.</p>
+      </div>
       <div class="interest-groups">
         <div><span>Build</span><strong>Software · hardware · prototypes</strong></div>
         <div><span>Explore</span><strong>Robotics · AI · computer vision</strong></div>
@@ -83,18 +74,19 @@ const projects = (await getCollection('projects'))
     </div>
   </section>
 
-  <section class="section shell contact-section" id="contact" aria-labelledby="contact-heading">
-    <div>
-      <p class="section-number">03 / CONTACT</p>
-      <h2 id="contact-heading">Open to useful work.</h2>
-      <p class="contact-intro">I’m looking for summer opportunities where I can learn quickly, contribute, and work on real technical problems.</p>
-    </div>
+  <section class="section shell compact-section" id="contact" aria-labelledby="contact-heading">
+    <header class="section-title-row">
+      <div><p class="section-number">03 / CONNECT</p><h2 id="contact-heading">Contact</h2></div>
+      <span class="availability"><i class="status-dot"></i>Open to Work</span>
+    </header>
 
-    <div class="contact-panel">
-      <a href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer"><span>LinkedIn</span><strong>Connect professionally</strong><b>↗</b></a>
-      <a href="https://github.com/ArtinHeidari" rel="me noreferrer"><span>GitHub</span><strong>View code and projects</strong><b>↗</b></a>
-      <div><span>Location</span><strong>Toronto, Ontario, Canada</strong></div>
-      <div><span>Availability</span><strong><i class="status-dot"></i> Open to Work</strong></div>
+    <div class="contact-compact">
+      <p>I’m looking for summer opportunities where I can learn quickly, contribute, and work on real technical problems.</p>
+      <div class="contact-actions">
+        <a class="button primary" href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer">LinkedIn ↗</a>
+        <a class="button ghost" href="https://github.com/ArtinHeidari" rel="me noreferrer">GitHub ↗</a>
+        <span>Toronto, Ontario, Canada</span>
+      </div>
     </div>
   </section>
 </BaseLayout>

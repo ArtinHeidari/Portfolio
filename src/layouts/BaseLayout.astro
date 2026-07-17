@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SearchPalette from '../components/SearchPalette.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -30,8 +31,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.u
     <title>{title}</title>
     <script is:inline>
       const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.dataset.theme = savedTheme ?? (prefersDark ? 'dark' : 'light');
+      document.documentElement.dataset.theme = savedTheme ?? 'dark';
     </script>
   </head>
   <body>
@@ -41,21 +41,115 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : Astro.u
       <slot />
     </main>
     <Footer />
+    <SearchPalette />
     <script>
-      const toggle = document.querySelector('[data-theme-toggle]');
-      const updateLabel = () => {
-        if (!(toggle instanceof HTMLButtonElement)) return;
+      const themeToggle = document.querySelector('[data-theme-toggle]');
+      const themeCommand = document.querySelector('[data-command-theme]');
+
+      const updateThemeLabel = () => {
+        if (!(themeToggle instanceof HTMLButtonElement)) return;
         const dark = document.documentElement.dataset.theme === 'dark';
-        toggle.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} mode`);
-        toggle.textContent = dark ? 'LIGHT' : 'DARK';
+        themeToggle.setAttribute('aria-label', `Switch to ${dark ? 'light' : 'dark'} mode`);
+        themeToggle.textContent = dark ? 'Light' : 'Dark';
       };
-      toggle?.addEventListener('click', () => {
+
+      const toggleTheme = () => {
         const dark = document.documentElement.dataset.theme === 'dark';
-        document.documentElement.dataset.theme = dark ? 'light' : 'dark';
-        localStorage.setItem('theme', dark ? 'light' : 'dark');
-        updateLabel();
+        const next = dark ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('theme', next);
+        updateThemeLabel();
+      };
+
+      themeToggle?.addEventListener('click', toggleTheme);
+      themeCommand?.addEventListener('click', toggleTheme);
+      updateThemeLabel();
+
+      const backdrop = document.querySelector('[data-command-backdrop]');
+      const input = document.querySelector('[data-command-input]');
+      const allItems = Array.from(document.querySelectorAll('[data-command-item]'));
+      const empty = document.querySelector('[data-command-empty]');
+      const openButtons = document.querySelectorAll('[data-command-open]');
+      const shortcut = document.querySelector('[data-command-shortcut]');
+      let activeIndex = 0;
+      let previousFocus = null;
+
+      if (shortcut instanceof HTMLElement) {
+        shortcut.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K';
+      }
+
+      const visibleItems = () => allItems.filter((item) => !item.hasAttribute('hidden'));
+
+      const setActive = (index) => {
+        const items = visibleItems();
+        if (!items.length) return;
+        activeIndex = (index + items.length) % items.length;
+        items.forEach((item, itemIndex) => item.classList.toggle('is-active', itemIndex === activeIndex));
+        items[activeIndex]?.scrollIntoView({ block: 'nearest' });
+      };
+
+      const openCommand = () => {
+        if (!(backdrop instanceof HTMLElement) || !(input instanceof HTMLInputElement)) return;
+        previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+        backdrop.hidden = false;
+        document.body.classList.add('command-open');
+        input.value = '';
+        allItems.forEach((item) => item.removeAttribute('hidden'));
+        if (empty instanceof HTMLElement) empty.hidden = true;
+        setActive(0);
+        requestAnimationFrame(() => input.focus());
+      };
+
+      const closeCommand = () => {
+        if (!(backdrop instanceof HTMLElement)) return;
+        backdrop.hidden = true;
+        document.body.classList.remove('command-open');
+        if (previousFocus instanceof HTMLElement) previousFocus.focus();
+      };
+
+      openButtons.forEach((button) => button.addEventListener('click', openCommand));
+
+      input?.addEventListener('input', () => {
+        if (!(input instanceof HTMLInputElement)) return;
+        const query = input.value.trim().toLowerCase();
+        allItems.forEach((item) => {
+          const match = item.textContent?.toLowerCase().includes(query) ?? false;
+          item.toggleAttribute('hidden', !match);
+        });
+        if (empty instanceof HTMLElement) empty.hidden = visibleItems().length !== 0;
+        setActive(0);
       });
-      updateLabel();
+
+      allItems.forEach((item) => item.addEventListener('click', () => closeCommand()));
+      backdrop?.addEventListener('click', (event) => {
+        if (event.target === backdrop) closeCommand();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+          event.preventDefault();
+          backdrop instanceof HTMLElement && !backdrop.hidden ? closeCommand() : openCommand();
+          return;
+        }
+        if (!(backdrop instanceof HTMLElement) || backdrop.hidden) return;
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          closeCommand();
+        } else if (event.key === 'ArrowDown') {
+          event.preventDefault();
+          setActive(activeIndex + 1);
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault();
+          setActive(activeIndex - 1);
+        } else if (event.key === 'Enter' && document.activeElement === input) {
+          event.preventDefault();
+          const item = visibleItems()[activeIndex];
+          if (item instanceof HTMLElement) item.click();
+        } else if (event.key === 'Tab') {
+          event.preventDefault();
+          setActive(activeIndex + (event.shiftKey ? -1 : 1));
+        }
+      });
     </script>
   </body>
 </html>
