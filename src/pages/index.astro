@@ -2,92 +2,83 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import BlogCard from '../components/BlogCard.astro';
 import { withBase } from '../lib/site';
 
 const projects = (await getCollection('projects'))
   .filter((project) => project.data.featured)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const posts = (await getCollection('blog'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 2);
 ---
 
 <BaseLayout>
   <section class="hero shell">
-    <div class="hero-meta">
-      <p>ENGINEERING · SOFTWARE · SYSTEMS</p>
-      <p>GREATER TORONTO AREA · CANADA</p>
-    </div>
     <div class="hero-grid">
-      <div>
-        <p class="kicker">Incoming engineering student and builder</p>
-        <h1><span>ARTIN</span><span class="outline-text">HEIDARI</span></h1>
+      <div class="hero-copy">
+        <p class="kicker">Incoming Queen’s Engineering student · Fall 2026</p>
+        <h1>Artin Heidari</h1>
+        <p class="hero-role">Engineering student focused on robotics, embedded systems, AI, and practical software.</p>
       </div>
-      <div class="hero-intro">
-        <p>I’m building practical software and hardware projects while documenting the decisions, failures, and lessons behind them.</p>
+      <div class="hero-summary">
+        <p>I build across hardware and software, with an emphasis on useful systems and clear engineering decisions.</p>
         <div class="button-row">
-          <a class="button primary" href={withBase('/projects/')}>View work <span aria-hidden="true">↗</span></a>
-          <a class="button ghost" href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer">LinkedIn</a>
+          <a class="button primary" href="#work">View projects <span aria-hidden="true">↓</span></a>
+          <a class="button ghost" href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer">LinkedIn ↗</a>
         </div>
       </div>
     </div>
+
+    <dl class="achievement-strip" aria-label="Highlights">
+      <div><dt>Education</dt><dd>Queen’s Engineering</dd><span>Starting Fall 2026</span></div>
+      <div><dt>Recognition</dt><dd>Math & skating</dd><span>Award recipient</span></div>
+      <div><dt>Focus</dt><dd>Robotics + AI</dd><span>Embedded and software systems</span></div>
+      <div><dt>Location</dt><dd>Toronto, Canada</dd><span>Open to opportunities</span></div>
+    </dl>
   </section>
 
-  <div class="ticker" aria-label="Areas of interest">
-    <div class="ticker-track">
-      <span>EMBEDDED SYSTEMS</span><b>✦</b><span>ROBOTICS</span><b>✦</b><span>SOFTWARE</span><b>✦</b><span>ARTIFICIAL INTELLIGENCE</span><b>✦</b><span>COMPUTER ENGINEERING</span><b>✦</b><span aria-hidden="true">EMBEDDED SYSTEMS</span><b aria-hidden="true">✦</b><span aria-hidden="true">ROBOTICS</span><b aria-hidden="true">✦</b>
-    </div>
-  </div>
-
-  <section class="snapshot shell" aria-labelledby="snapshot-heading">
-    <h2 id="snapshot-heading" class="sr-only">Current snapshot</h2>
-    <div><strong>BUILDING</strong><span>IN PUBLIC</span></div>
-    <div><strong>GTA</strong><span>ONTARIO · CANADA</span></div>
-    <div><strong>2026</strong><span>ENGINEERING · FALL</span></div>
-    <div><strong>OPEN</strong><span>TO WORK</span></div>
-  </section>
-
-  <section class="section shell" id="work" aria-labelledby="work-heading">
-    <div class="section-heading">
-      <div><p class="section-number">01 / SELECTED WORK</p><h2 id="work-heading">Projects built with intent.</h2></div>
-      <a class="text-link" href={withBase('/projects/')}>View all projects <span aria-hidden="true">→</span></a>
+  <section class="section shell work-section" id="work" aria-labelledby="work-heading">
+    <div class="compact-heading">
+      <div>
+        <p class="section-number">01 · SELECTED PROJECTS</p>
+        <h2 id="work-heading">Work</h2>
+      </div>
+      <a class="text-link" href={withBase('/projects/')}>All projects <span aria-hidden="true">→</span></a>
     </div>
     <div class="project-list">
       {projects.map((project, index) => <ProjectCard project={project} index={index + 1} />)}
     </div>
-    <p class="demo-note"><strong>Preview note:</strong> The project above is intentionally marked as sample content and will be replaced by a real build.</p>
+    <p class="demo-note"><strong>Portfolio preview:</strong> this sample will be replaced by the first documented build.</p>
   </section>
 
-  <section class="section split-section shell" id="about" aria-labelledby="about-heading">
-    <div><p class="section-number">02 / ABOUT</p><h2 id="about-heading">Curious across hardware and software.</h2></div>
-    <div class="prose-large">
-      <p>I’m an incoming engineering student interested in computer engineering, electrical systems, robotics, embedded development, AI, and computer vision.</p>
-      <p>This portfolio will grow alongside the work: short experiments, complete case studies, and honest build logs that explain more than the finished result.</p>
-      <div class="interest-grid">
-        <span>Embedded systems</span><span>Robotics</span><span>Software development</span><span>AI & computer vision</span>
-      </div>
+  <section class="section shell about-section" id="about" aria-labelledby="about-heading">
+    <div>
+      <p class="section-number">02 · ABOUT</p>
+      <h2 id="about-heading">Engineering with range.</h2>
+    </div>
+    <div class="about-copy">
+      <p>I’m an incoming Queen’s Engineering student interested in computer and electrical engineering. I enjoy moving between code, electronics, and physical systems to understand how complete products work.</p>
+      <p>Outside engineering, I’ve pursued mathematics, skating, robotics, tutoring, piano, and chess—experiences that have built discipline, communication, and creative problem-solving.</p>
+      <ul class="skill-list" aria-label="Areas of interest">
+        <li>Embedded systems</li>
+        <li>Robotics</li>
+        <li>Software development</li>
+        <li>AI & computer vision</li>
+      </ul>
     </div>
   </section>
 
-  <section class="section shell" aria-labelledby="writing-heading">
-    <div class="section-heading">
-      <div><p class="section-number">03 / WRITING</p><h2 id="writing-heading">Notes from the build process.</h2></div>
-      <a class="text-link" href={withBase('/blog/')}>View all writing <span aria-hidden="true">→</span></a>
+  <section class="section shell contact-section" id="contact" aria-labelledby="contact-heading">
+    <div>
+      <p class="section-number">03 · CONTACT</p>
+      <h2 id="contact-heading">Let’s connect.</h2>
+      <p class="contact-intro">Open to summer work, engineering opportunities, and conversations about ambitious technical projects.</p>
     </div>
-    <div class="blog-grid">
-      {posts.map((post) => <BlogCard post={post} />)}
-    </div>
-  </section>
-
-  <section class="section contact-section shell" id="contact" aria-labelledby="contact-heading">
-    <div><p class="section-number">04 / CONTACT</p><h2 id="contact-heading">Let’s build something useful.</h2></div>
     <div class="contact-panel">
       <div><span>Status</span><strong><i class="status-dot"></i> Open to Work</strong></div>
-      <div><span>Location</span><strong>Greater Toronto Area, Ontario, Canada</strong></div>
-      <div><span>Phone</span><strong>Available upon request</strong></div>
-      <div><span>Résumé</span><strong>Available soon</strong></div>
-      <div class="contact-links"><a class="button primary" href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer">LinkedIn ↗</a><a class="button ghost" href="https://github.com/ArtinHeidari" rel="me noreferrer">GitHub ↗</a></div>
+      <div><span>Location</span><strong>Toronto, Ontario, Canada</strong></div>
+      <div><span>Education</span><strong>Queen’s Engineering · Fall 2026</strong></div>
+      <div class="contact-links">
+        <a class="button primary" href="https://www.linkedin.com/in/artinheidari/" rel="me noreferrer">LinkedIn ↗</a>
+        <a class="button ghost" href="https://github.com/ArtinHeidari" rel="me noreferrer">GitHub ↗</a>
+      </div>
     </div>
   </section>
 </BaseLayout>
